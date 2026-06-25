@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deteksi Bahasa Isyarat AI</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+
+    <script src="script.js" defer></script>
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+  </head>
+
+  <body>
+
+    <header>
+      <span class="site-title">Sign Language</span>
+      <div class="status">
+        <div class="dot"></div>
+        <span>Kamera aktif</span>
+      </div>
+    </header>
+
+    <div class="mode-selector">
+      <button id="mode-lstm" class="mode-btn active" onclick="switchMode('lstm')">
+        Kata — LSTM
+      </button>
+      <button id="mode-rf" class="mode-btn" onclick="switchMode('rf')">
+        Huruf & Angka — RF
+      </button>
+    </div>
+
+    <div class="main-layout">
+
+      <div class="cam-wrap">
+        <video id="webcam" autoplay playsinline style="display: none"></video>
+        <canvas id="output_canvas"></canvas>
+        <div class="cam-badge" id="mode-badge">LSTM MODE</div>
+        <div class="frame-info" id="info-box">
+          Buffer: <b id="frame-count">0</b>/60
+        </div>
+        <div class="hold-bar-wrap" id="hold-bar-wrap">
+          <div class="hold-bar-label" id="hold-bar-label">Tahan: —</div>
+          <div class="hold-bar-track">
+            <div class="hold-bar-fill" id="hold-bar-fill"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-panel">
+        <div class="result-label" id="label-type">Terdeteksi</div>
+        <div id="prediction">—</div>
+
+        <div class="divider"></div>
+
+        <div class="conf-label-row">
+          <span>Keyakinan</span>
+          <span id="confidence">0%</span>
+        </div>
+        <div class="conf-track">
+          <div class="conf-fill" id="conf-fill"></div>
+        </div>
+
+        <div class="vote-row" id="vote-row">
+          <div class="vote-title">Voting (5 frame)</div>
+          <div class="vote-chips" id="vote-chips"></div>
+        </div>
+
+        <div class="panel-footer">
+          <button class="btn-debug" onclick="toggleDebug()">Debug</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="debug-panel" id="debug-panel"></div>
+
+  </body>
+</html>
